@@ -1,0 +1,12 @@
+name: Скарги
+modelClass: prozorro\Claims\Models\Claim
+form: $/prozorro/claims/models/claim/fields.yaml
+defaultRedirect: prozorro/claims/claims
+create:
+    redirect: 'prozorro/claims/claims/update/:complaint_id'
+    redirectClose: prozorro/claims/claims
+update:
+    title: Зміна статусу скарги
+    redirect: 'prozorro/claims/claims/update/:complaint_id'
+    redirectClose: prozorro/claims/claims
+preview: {  }

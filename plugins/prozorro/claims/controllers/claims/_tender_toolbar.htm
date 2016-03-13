@@ -1,0 +1,23 @@
+<style>
+	.tender-results-table {
+		padding-left: 20px;
+	}
+	.tender-results-table h3 {
+		margin: 0 0 10px 0;
+		font-size: 28px;
+		color: #2b3e50;
+		display: inline-block;
+	}
+	.results-description {
+		color: #2b3e50;
+		font-size: 14px;
+		line-height: 180%;
+		margin-bottom: 30px;
+	}
+</style>
+
+<div class="tender-results-table">
+	<h3><?= $this->tender['title'] ?></h3>
+	<div class="results-description"><?= $this->tender['tenderID'] ?><br><a href="https://prozorro.gov.ua/tender/<?=$this->tender['tenderID']?>/" target="_blank">Відкрити на порталі</a></div>
+	
+</div>

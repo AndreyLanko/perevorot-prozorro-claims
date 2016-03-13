@@ -1,0 +1,66 @@
+fields:
+    complaint_complaintID:
+        label: Номер скарги
+        span: auto
+        disabled: 1
+        type: text
+    jsonTenderId:
+        label: № тендеру
+        span: auto
+        disabled: 1
+        type: text
+    jsonTenderTitle:
+        label: Предмет закупівлі
+        span: auto
+        disabled: 1
+        type: text
+    jsonProcuringEntity:
+        label: Замовник
+        span: auto
+        disabled: 1
+        type: text
+    jsonAuthor:
+        label: Скаржник
+        span: auto
+        disabled: 1
+        type: text
+    jsonDateSubmitted:
+        label: Дата подання
+        mode: datetime
+        span: auto
+        disabled: 1
+        type: datepicker
+    jsonTitle:
+        label: Назва
+        span: auto
+        disabled: 1
+        type: text
+    jsonDescription:
+        label: Опис
+        size: ''
+        span: auto
+        disabled: 1
+        type: textarea
+    statusTranslated:
+        label: Статус
+        oc.commentPosition: ''
+        span: auto
+        disabled: 1
+        type: text
+    authorDocuments:
+        label: Документи вкладені скаржником
+        span: left
+        type: partial
+        path: documents
+    uploadDocuments:
+        label: Рішення органу оскарження
+        span: left
+        type: partial
+        path: documents
+    file:
+        label: Завантаження документів
+        oc.commentPosition: ''
+        mode: file
+        hidden: true
+        span: left
+        type: fileupload

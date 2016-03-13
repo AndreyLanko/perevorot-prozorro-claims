@@ -1,0 +1,38 @@
+1.0.1:
+    - 'Initialize plugin.'
+1.0.2:
+    - 'Created table prozorro_claims_claims'
+    - builder_table_create_prozorro_claims_claims.php
+1.0.3:
+    - 'Updated table prozorro_claims_claims'
+    - builder_table_update_prozorro_claims_claims.php
+1.0.4:
+    - 'Updated table prozorro_claims_claims'
+    - builder_table_update_prozorro_claims_claims_2.php
+1.0.5:
+    - 'Updated table prozorro_claims_claims'
+    - builder_table_update_prozorro_claims_claims_3.php
+1.0.6:
+    - 'Created table prozorro_claims_tenders'
+    - builder_table_create_prozorro_claims_tenders.php
+1.0.7:
+    - 'Updated table prozorro_claims_tenders'
+    - builder_table_update_prozorro_claims_tenders.php
+1.0.8:
+    - 'Updated table prozorro_claims_claims'
+    - builder_table_update_prozorro_claims_claims_4.php
+1.0.9:
+    - 'Updated table prozorro_claims_claims'
+    - builder_table_update_prozorro_claims_claims_5.php
+1.0.10:
+    - 'Updated table prozorro_claims_tenders'
+    - builder_table_update_prozorro_claims_tenders_2.php
+1.0.11:
+    - 'Updated table prozorro_claims_tenders'
+    - builder_table_update_prozorro_claims_tenders_3.php
+1.0.12:
+    - 'Updated table prozorro_claims_claims'
+    - builder_table_update_prozorro_claims_claims_6.php
+1.0.13:
+    - 'Created table prozorro_claims_documents'
+    - builder_table_create_prozorro_claims_documents.php

@@ -1,0 +1,14 @@
+list: $/prozorro/claims/models/claim/columns.yaml
+modelClass: prozorro\Claims\Models\Claim
+title: Прийняті до розгляду
+noRecordsMessage: 'backend::lang.list.no_records'
+showSetup: true
+showCheckboxes: false
+defaultSort:
+    column: complaint_date
+    direction: desc
+recordsPerPage: 20
+recordUrl: 'prozorro/claims/claims/update/:complaint_id'
+toolbar:
+    search:
+        prompt: backend::lang.list.search_prompt

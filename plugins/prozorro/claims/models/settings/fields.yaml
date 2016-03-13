@@ -1,0 +1,13 @@
+fields:
+    api:
+        label: API гіперпосилання
+        span: auto
+        type: text
+    portal_url:
+        label: Лінк на портал
+        span: auto
+        type: text
+    api_key:
+        label: API ключ
+        span: auto
+        type: text

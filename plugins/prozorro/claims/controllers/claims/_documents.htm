@@ -1,0 +1,24 @@
+<?php
+    if($field->value)
+    {
+        foreach($field->value as $k=>$document)
+        {
+?>
+    <div>
+        <a href="<?= $document->json['url'] ?>" target="_blank"><?=$document->json['title'] ?></a>
+        <div><?=date('d.m.Y H:i', strtotime($document->json['datePublished']))?></div>
+    </div>
+    <?php
+        if($k<sizeof($field->value)) echo '<br>';
+    ?>
+    
+<?php
+        }
+    }
+    else
+    {
+?>
+<div>Намає документів</div>
+<?php
+    }
+?>

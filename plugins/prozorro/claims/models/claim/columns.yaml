@@ -1,0 +1,57 @@
+columns:
+#    tender_procurementMethod:
+#        label: tender_procurementMethod
+#    tender_procurementMethodType:
+#        label: tender_procurementMethodType
+    complaint_date:
+        label: Дата оновлення
+        type: partial
+        path: ~/plugins/prozorro/claims/controllers/claims/_complaint_date.htm
+        invisible: false
+        sortable: true
+        width: 170px
+        searchable: true
+    complaint_complaintID:
+        label: Номер скарги
+        type: text
+        width: 220px
+        searchable: true
+    jsonTenderId:
+        label: № тендеру
+        type: text
+        sortable: false
+        width: 200px
+    jsonTenderTitle:
+        label: Предмет закупівлі
+        type: text
+        invisible: true
+        sortable: false
+    jsonProcuringEntity:
+        label: Замовник
+        type: text
+        sortable: false
+    jsonAuthor:
+        label: Скаржник
+        type: text
+        sortable: false
+    jsonDateSubmitted:
+        label: Дата подання
+        type: datepicker
+        invisible: true
+        sortable: false
+    jsonTitle:
+        label: Назва
+        type: text
+        invisible: true
+        sortable: false
+    jsonDescription:
+        label: Опис
+        type: textarea
+        invisible: true
+        sortable: false
+    complaint_status:
+        label: Статус
+        type: partial
+        path: ~/plugins/prozorro/claims/controllers/claims/_status.htm
+        width: 130px
+        searchable: true        

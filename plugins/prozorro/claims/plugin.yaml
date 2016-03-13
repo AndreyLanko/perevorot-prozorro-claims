@@ -1,0 +1,36 @@
+plugin:
+    name: 'prozorro.claims::lang.plugin.name'
+    description: 'prozorro.claims::lang.plugin.description'
+    author: 'Andrey Lanko'
+    icon: oc-icon-briefcase
+    homepage: ''
+navigation:
+    claims-main:
+        label: 'prozorro.claims::lang.plugin.name'
+        url: prozorro/claims/claimspending
+        icon: icon-briefcase
+        permissions:
+            - prozorro.claims
+        sideMenu:
+            prozorro-claims-pending:
+                label: Нові скарги
+                url: prozorro/claims/claimspending
+                icon: icon-star-half-empty
+                permissions:
+                    - prozorro.claims
+            prozorro-accepted:
+                label: Прийняті до розгляду
+                url: prozorro/claims/claimsaccepted
+                icon: icon-thumbs-up
+                permissions:
+                    - prozorro.claims
+            prozorro-archive:
+                label: Архів
+                url: prozorro/claims/claimsarchive
+                icon: icon-archive
+                permissions:
+                    - prozorro.claims
+permissions:
+    prozorro.claims:
+        tab: Скарги
+        label: 'prozorro.claims::lang.plugin.name'

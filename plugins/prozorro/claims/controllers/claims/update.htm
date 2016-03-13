@@ -1,0 +1,87 @@
+<?php Block::put('breadcrumb') ?>
+    <ul>
+        <li><a href="<?= Backend::url('prozorro/claims/claims') ?>">Скарги</a></li>
+        <li>Інформація про скаргу<?php /*echo e($this->pageTitle) */?></li>
+    </ul>
+    <div style="float:right;color:#FFF;margin-top:-18px"><a style="color:#FFF;text-decoration: none" href="<?=prozorro\Claims\Models\Settings::get('portal_url')?>/tender/<?= $this->vars['formModel']['complaint_json']['tender']['tenderID'] ?>" target="_blank">Відкрити тендер на порталі</a></div>
+<?php Block::endPut() ?>
+
+<?php if (!$this->fatalError): ?>
+
+    <?= Form::open(['class' => 'layout']) ?>
+        <div class="layout-row">
+            <?= $this->formRender() ?>
+        </div>
+        <?php
+            $buttons=false;
+
+            switch($this->vars['formModel']->complaint_status)
+            {
+                case 'pending':
+                    $url='claimspending';
+                    $buttons=[
+                        ['name'=>'Прийняти', 'action'=>'accepted'],
+                        ['name'=>'Відхилити', 'action'=>'invalid']
+                    ];
+                break;
+                case 'accepted':
+                    $url='claimsaccepted';
+                    $buttons=[
+                        ['name'=>'Задовольнити', 'action'=>'satisfied'],
+                        ['name'=>'Відхилити', 'action'=>'declined']
+                    ];
+                break;
+                default:
+                    $url='claimsarchive';
+            }
+        ?>
+
+        <?php if($buttons): ?>
+            <div class="form-buttons">
+                <div class="loading-indicator-container">
+                    <button
+                        type="submit"
+                        data-request="onSave"
+                        data-request-data="redirect:1,action:'file',claim_id:'<?= $this->vars['formModel']->complaint_id ?>'"
+                        data-hotkey="ctrl+s, cmd+s"
+                        data-load-indicator="Опублікування..."
+                        class="btn btn-grey">
+                        Опублікувати
+                    </button>
+                </div>
+            </div>
+            <br><br>            
+            <div class="form-buttons">
+                <div class="loading-indicator-container">
+                    <button
+                        type="submit"
+                        data-request="onSave"
+                        data-request-data="redirect:1,action:'<?=$buttons[0]['action']?>',claim_id:'<?= $this->vars['formModel']->complaint_id ?>'"
+                        data-hotkey="ctrl+s, cmd+s"
+                        data-load-indicator="Збереження..."
+                        class="btn btn-success">
+                        <?=$buttons[0]['name']?>
+                    </button>
+                    <button
+                        type="submit"
+                        data-request="onSave"
+                        data-request-data="redirect:1,action:'<?=$buttons[1]['action']?>',claim_id:'<?= $this->vars['formModel']->complaint_id ?>'"
+                        data-hotkey="ctrl+s, cmd+s"
+                        data-load-indicator="Збереження..."
+                        class="btn btn-danger">
+                        <?=$buttons[1]['name']?>
+                    </button>
+    
+                    <span class="btn-text">
+                        або <a href="<?= Backend::url('prozorro/claims/'.$url) ?>">Повернутися до списку</a>
+                    </span>
+                </div>
+            </div>
+        <?php endif; ?>
+
+    <?= Form::close() ?>
+
+<?php else: ?>
+    <p class="flash-message static error"><?= e(trans($this->fatalError)) ?></p>
+    <p><a href="<?= Backend::url('prozorro/claims/claims') ?>" class="btn btn-default"><?= e(trans('backend::lang.form.return_to_list')) ?></a></p>
+<?php endif ?>
