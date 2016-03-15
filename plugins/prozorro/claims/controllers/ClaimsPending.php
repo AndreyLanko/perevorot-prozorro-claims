@@ -1,8 +1,8 @@
 <?php namespace prozorro\Claims\Controllers;
 
-use Backend\Classes\Controller;
 use BackendMenu;
 use BackendAuth;
+use Backend\Classes\Controller;
 use prozorro\Claims\Models\Tender as Tender;
 
 class ClaimsPending extends Controller
@@ -25,7 +25,7 @@ class ClaimsPending extends Controller
 
     public function listExtendQuery($query)
     {
-        //$query->whereIn('tender_procurementMethodType', ['aboveThresholdUA', 'aboveThresholdEU', 'reporting', 'negotiation', 'negotiation.quick']);
+        $query->where('tender_procurementMethodType', (\Config::get('claims.tender_type')=='!belowThreshold' ? '!=' : '='), 'belowThreshold');
         $query->whereIn('complaint_status', $this->statuses);
     }
 }

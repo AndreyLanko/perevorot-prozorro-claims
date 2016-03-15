@@ -1,7 +1,6 @@
 <?php namespace prozorro\Claims\Classes;
 
 use BackendAuth;
-use prozorro\Claims\Models\Settings as Settings;
 use prozorro\Claims\Models\Document as Document;
 use GuzzleHttp;
 use Cache;
@@ -32,8 +31,8 @@ class API
 
         $json=[
             'status'=>$json_claim['status'],
-            'description'=>$json_claim['description'],
-            'title'=>$json_claim['title'],
+            'description'=>!empty($json_claim['description']) ? $json_claim['description'] : '',
+            'title'=>!empty($json_claim['title']) ? $json_claim['title'] : '',
             'author'=>!empty($json_claim['author']) ? $json_claim['author'] : (!empty($claim->complaint_json['author']) ? $claim->complaint_json['author']: ''),
             'tender'=>[
                 'procuringEntity'=>$json_tender['data']['procuringEntity'],
@@ -95,6 +94,6 @@ class API
     
     private static function url($url)
     {
-        return Settings::get('api').vsprintf($url, array_slice(func_get_args(), 1));
+        return \Config::get('claims.api_url').vsprintf($url, array_slice(func_get_args(), 1));
     }
 }

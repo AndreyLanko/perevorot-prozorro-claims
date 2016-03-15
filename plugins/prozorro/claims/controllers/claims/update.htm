@@ -3,7 +3,7 @@
         <li><a href="<?= Backend::url('prozorro/claims/claims') ?>">Скарги</a></li>
         <li>Інформація про скаргу<?php /*echo e($this->pageTitle) */?></li>
     </ul>
-    <div style="float:right;color:#FFF;margin-top:-18px"><a style="color:#FFF;text-decoration: none" href="<?=prozorro\Claims\Models\Settings::get('portal_url')?>/tender/<?= $this->vars['formModel']['complaint_json']['tender']['tenderID'] ?>" target="_blank">Відкрити тендер на порталі</a></div>
+    <div style="float:right;color:#FFF;margin-top:-18px"><a style="color:#FFF;text-decoration: none" href="<?=Config::get('claims.portal_url')?>/tender/<?= $this->vars['formModel']['complaint_json']['tender']['tenderID'] ?>" target="_blank">Відкрити тендер на порталі</a></div>
 <?php Block::endPut() ?>
 
 <?php if (!$this->fatalError): ?>

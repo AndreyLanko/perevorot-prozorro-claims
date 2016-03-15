@@ -4,7 +4,6 @@ use Model;
 use Input;
 use BackendAuth;
 use Flash;
-use prozorro\Claims\Models\Settings as Settings;
 use prozorro\Claims\Classes\Api as API;
 use GuzzleHttp;
 
@@ -74,7 +73,7 @@ class Claim extends Model
 
                     $client->request('PATCH', API::claimUrl($claim->complaint_path, $claim->complaint_id), [
                         'auth'=>[
-                            Settings::get('api_key'),
+                            \Config::get('claims.api_key'),
                             ''
                         ],
                         'headers' => [
@@ -107,7 +106,7 @@ class Claim extends Model
 
                         $response=$client->request('POST', API::claimDocumentUrl($claim->complaint_path, $claim->complaint_id), [
                             'auth'=>[
-                                Settings::get('api_key'),
+                                \Config::get('claims.api_key'),
                                 ''
                             ],
                             'headers' => [
