@@ -21,14 +21,14 @@
                     $url='claimspending';
                     $buttons=[
                         ['name'=>'Прийняти', 'action'=>'accepted'],
-                        ['name'=>'Відхилити', 'action'=>'invalid']
+                        ['name'=>'Залишити без розгляду', 'action'=>'invalid']
                     ];
                 break;
                 case 'accepted':
                     $url='claimsaccepted';
                     $buttons=[
                         ['name'=>'Задовольнити', 'action'=>'satisfied'],
-                        ['name'=>'Відхилити', 'action'=>'declined']
+                        ['name'=>'Залишити без задоволення', 'action'=>'declined']
                     ];
                 break;
                 default:
