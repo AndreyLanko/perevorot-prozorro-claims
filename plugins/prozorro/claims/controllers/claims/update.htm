@@ -20,15 +20,15 @@
                 case 'pending':
                     $url='claimspending';
                     $buttons=[
-                        ['name'=>'Прийняти', 'action'=>'accepted'],
-                        ['name'=>'Залишити без розгляду', 'action'=>'invalid']
+                        ['name'=>'Прийняти', 'action'=>'accepted', 'warning'=>'СКАРГА ПРИЙНЯТА ДО РОЗГЛЯДУ'],
+                        ['name'=>'Залишити без розгляду', 'action'=>'invalid', 'warning'=>'СКАРГА ЗАЛИШЕНА БЕЗ РОЗГЛЯДУ']
                     ];
                 break;
                 case 'accepted':
                     $url='claimsaccepted';
                     $buttons=[
-                        ['name'=>'Задовольнити', 'action'=>'satisfied'],
-                        ['name'=>'Залишити без задоволення', 'action'=>'declined']
+                        ['name'=>'Задовольнити', 'action'=>'satisfied', 'warning'=>'РОЗГЛЯД СКАРГИ ЗУПИНЕНИЙ'],
+                        ['name'=>'Залишити без задоволення', 'action'=>'declined', 'warning'=>'СКАРГА НЕ ЗАДОВОЛЕНА']
                     ];
                 break;
                 default:
@@ -53,34 +53,109 @@
             <br><br>            
             <div class="form-buttons">
                 <div class="loading-indicator-container">
-                    <button
-                        type="submit"
-                        data-request="onSave"
-                        data-request-data="redirect:1,action:'<?=$buttons[0]['action']?>',claim_id:'<?= $this->vars['formModel']->complaint_id ?>'"
-                        data-hotkey="ctrl+s, cmd+s"
-                        data-load-indicator="Збереження..."
-                        class="btn btn-success">
-                        <?=$buttons[0]['name']?>
-                    </button>
-                    <button
-                        type="submit"
-                        data-request="onSave"
-                        data-request-data="redirect:1,action:'<?=$buttons[1]['action']?>',claim_id:'<?= $this->vars['formModel']->complaint_id ?>'"
-                        data-hotkey="ctrl+s, cmd+s"
-                        data-load-indicator="Збереження..."
-                        class="btn btn-danger">
-                        <?=$buttons[1]['name']?>
-                    </button>
-    
+                    <button type="button"
+                            class="btn btn-success warning-action"
+                            data-toggle="modal"
+                            data-target="#warning"
+                            data-warning-text="<?=$buttons[0]['warning']?>"
+                            data-warning-button="#success-button"
+                            data-warning-action="success"
+                            data-hotkey="ctrl+s, cmd+s">
+                        <i class="oc-icon oc-icon-thumbs-up"></i> <?=$buttons[0]['name']?>
+                    </button> 
+                    <button type="button"
+                            class="btn btn-danger warning-action"
+                            data-toggle="modal"
+                            data-target="#warning"
+                            data-warning-text="<?=$buttons[1]['warning']?>"
+                            data-warning-button="#reject-button"
+                            data-warning-action="danger"
+                            data-hotkey="ctrl+s, cmd+s">
+                        <i class="oc-icon oc-icon-remove"></i> <?=$buttons[1]['name']?>
+                    </button>    
                     <span class="btn-text">
                         або <a href="<?= Backend::url('prozorro/claims/'.$url) ?>">Повернутися до списку</a>
                     </span>
                 </div>
             </div>
         <?php endif; ?>
+        <script>
+            $('.warning-action').on('click', function(){
+                $('#warning-title').html($(this).data('warning-text'));
+                $('.modal-warning-action').hide();
+                $($(this).data('warning-button')).show();
 
-    <?= Form::close() ?>
+                $('#warning-callout').removeClass('callout-danger callout-success').addClass('callout-'+$(this).data('warning-action'));
+            });
+        </script>
+        <div class="modal fade" id="warning" tabindex="-1" role="dialog" aria-labelledby="warning" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="warning">Увага!</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div>Ця дія носить незворотній характер. Будь-ласка, переконайтесь, що ви не припустили помилки.</div>
+                        <br>
+                        <div class="callout fade in callout-success" id="warning-callout">
+                            <div class="content text-center">
+                                <h2 style="margin-top:0px" id="warning-title"></h2>
+                            </div>
+                        </div>
+                        <div class="form-group text-field">
+                            <label>Замовник</label>
+                            <div><?= $this->vars['formModel']->jsonAuthor ?></div>
+                        </div>
 
+                        <div class="form-group text-field">
+                            <label>Скаржник</label>
+                            <div><?= $this->vars['formModel']->jsonProcuringEntity ?></div>
+                        </div>
+                        <hr>
+                        <div class="checkbox custom-checkbox">
+                            <input name="checkbox" value="1" type="checkbox" id="confirmed" />
+                            <label for="confirmed">Все вірно</label>
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer modal-warning-action" style="text-align:left" id="success-button">
+                        <button                            
+                            type="submit"
+                            data-request="onSave"
+                            data-request-data="redirect:1,action:'<?=$buttons[0]['action']?>',claim_id:'<?= $this->vars['formModel']->complaint_id ?>'"
+                            data-hotkey="ctrl+s, cmd+s"
+                            data-load-indicator="Збереження..."
+                            class="btn btn-success"
+                            data-trigger-action="enable"
+                            data-trigger="#confirmed"
+                            data-trigger-condition="checked">
+                            <i class="oc-icon oc-icon-thumbs-up"></i> <?=$buttons[0]['name']?>
+                        </button>
+                        <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Повернутись до скарги</button>
+                    </div>
+
+                    <div class="modal-footer modal-warning-action" style="text-align:left" id="reject-button">
+                        <button
+                            type="submit"
+                            data-request="onSave"
+                            data-request-data="redirect:1,action:'<?=$buttons[1]['action']?>',claim_id:'<?= $this->vars['formModel']->complaint_id ?>'"
+                            data-hotkey="ctrl+s, cmd+s"
+                            data-load-indicator="Збереження..."
+                            class="btn btn-danger"
+                            data-trigger-action="enable"
+                            data-trigger="#confirmed"
+                            data-trigger-condition="checked">                            
+                            <i class="oc-icon oc-icon-remove"></i><?=$buttons[1]['name']?>
+                        </button>
+                        <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Повернутись до скарги</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    <?= Form::close() ?>        
 <?php else: ?>
     <p class="flash-message static error"><?= e(trans($this->fatalError)) ?></p>
     <p><a href="<?= Backend::url('prozorro/claims/claims') ?>" class="btn btn-default"><?= e(trans('backend::lang.form.return_to_list')) ?></a></p>
