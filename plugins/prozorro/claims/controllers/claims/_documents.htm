@@ -1,15 +1,19 @@
+<div class="documents">
 <?php
     if($field->value)
     {
+        $total=sizeof($field->value);
+        $cnt=0;
         foreach($field->value as $k=>$document)
         {
+            $cnt++;
 ?>
     <div>
         <a href="<?= $document->json['url'] ?>" target="_blank"><?=$document->json['title'] ?></a>
         <div><?=date('d.m.Y H:i', strtotime($document->json['datePublished']))?></div>
     </div>
     <?php
-        if($k<sizeof($field->value)) echo '<br>';
+        if($cnt<$total) '<br>';
     ?>
     
 <?php
@@ -18,7 +22,8 @@
     else
     {
 ?>
-<div>Намає документів</div>
+<div>Немає документів</div>
 <?php
     }
 ?>
+</div>
