@@ -65,13 +65,13 @@ class Claim extends Model
                 {
                     $jar = new \GuzzleHttp\Cookie\CookieJar();
                     
-                    $client->request('GET', API::claimUrl($claim->complaint_path, $claim->complaint_id), [
+                    $client->request('GET', API::claimUrl($claim->tender_id.'/'.$claim->complaint_path, $claim->complaint_id), [
                         'cookies' => $jar
                     ]);
     
                     $this->complaint_status=Input::get('action');
 
-                    $client->request('PATCH', API::claimUrl($claim->complaint_path, $claim->complaint_id), [
+                    $client->request('PATCH', API::claimUrl($claim->tender_id.'/'.$claim->complaint_path, $claim->complaint_id), [
                         'auth'=>[
                             \Config::get('claims.api_key'),
                             ''
@@ -100,11 +100,11 @@ class Claim extends Model
                     try{
                         $jar = new \GuzzleHttp\Cookie\CookieJar();
                         
-                        $client->request('GET', API::claimDocumentUrl($claim->complaint_path, $claim->complaint_id), [
+                        $client->request('GET', API::claimDocumentUrl($claim->tender_id.'/'.$claim->complaint_path, $claim->complaint_id), [
                             'cookies' => $jar
                         ]);
 
-                        $response=$client->request('POST', API::claimDocumentUrl($claim->complaint_path, $claim->complaint_id), [
+                        $response=$client->request('POST', API::claimDocumentUrl($claim->tender_id.'/'.$claim->complaint_path, $claim->complaint_id), [
                             'auth'=>[
                                 \Config::get('claims.api_key'),
                                 ''

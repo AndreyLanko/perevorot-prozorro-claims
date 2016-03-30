@@ -14,7 +14,7 @@ class API
 
         $client = new GuzzleHttp\Client();
 
-        $json_claims=$client->request('GET', self::claimsUrl($claim->complaint_path, $claim->complaint_id));
+        $json_claims=$client->request('GET', self::claimsUrl($claim->tender_id.'/'.$claim->complaint_path, $claim->complaint_id));
         $json_tender=$client->request('GET', self::tenderUrl($claim->jsonTenderHash));
 
         $response_claims=(string) $json_claims->getBody();
