@@ -31,7 +31,7 @@ class Claim extends Model
     /**
      * @var string The database table used by the model.
      */
-    public $table;
+    public $table='complaints';
     public $primaryKey = 'complaint_id';
 
     public $hasMany = [
@@ -45,10 +45,12 @@ class Claim extends Model
         'file' => ['System\Models\File']
     ];
 
+/*
     public function __construct()
     {
         $this->table = env('DB_complaints_table', 'complaints');
     }
+*/
 
     public function filterFields($fields, $context = null)
     {

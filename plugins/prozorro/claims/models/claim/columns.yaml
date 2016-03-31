@@ -1,8 +1,4 @@
 columns:
-#    tender_procurementMethod:
-#        label: tender_procurementMethod
-#    tender_procurementMethodType:
-#        label: tender_procurementMethodType
     complaint_date:
         label: Дата оновлення
         type: partial
@@ -19,7 +15,7 @@ columns:
     tender_status:
         label: Статус тендеру
         sortable: true
-        width: 100px
+        width: 200px
         type: partial
         path: ~/plugins/prozorro/claims/controllers/claims/_tender_status.htm
     jsonTenderId:

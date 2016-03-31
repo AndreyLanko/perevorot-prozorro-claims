@@ -40,5 +40,8 @@ class ClaimsPending extends Controller
         if(!empty($this->ignore_tender_statuses)){
             $query->whereNotIn('tender_status', $this->ignore_tender_statuses);
         }
+
+        if((boolean) env('SANDBOX'))
+            $query->where('tender_mode', '=', 'test');
     }
 }

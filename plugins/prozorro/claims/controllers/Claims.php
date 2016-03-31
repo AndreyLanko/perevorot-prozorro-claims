@@ -29,6 +29,12 @@ class Claims extends Controller
     {
         $claim=Claim::where('complaint_id', '=', $claimId)->first();
 
+        if(!(boolean) env('SANDBOX') && $claim->tender_mode=='test')
+            abort(404);
+
+        if((boolean) env('SANDBOX') && $claim->tender_mode!=='test')
+            abort(404);
+
         if(API::refreshClaimJson($claim)===false)
             return 'Не вказано номер тендеру для скарги';
 
