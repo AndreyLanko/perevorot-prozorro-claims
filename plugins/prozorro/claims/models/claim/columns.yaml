@@ -16,6 +16,12 @@ columns:
         type: text
         width: 220px
         searchable: true
+    tender_status:
+        label: Статус тендеру
+        sortable: true
+        width: 100px
+        type: partial
+        path: ~/plugins/prozorro/claims/controllers/claims/_tender_status.htm
     jsonTenderId:
         label: № тендеру
         type: text

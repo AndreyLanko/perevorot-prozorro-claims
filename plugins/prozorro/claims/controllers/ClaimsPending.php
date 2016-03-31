@@ -11,7 +11,9 @@ class ClaimsPending extends Controller
 
     public $listConfig = 'config_list.yaml';
 
-    public $statuses=['pending'];
+    public $claim_statuses=['pending'];
+    public $tender_statuses;
+    public $ignore_tender_statuses=['cancelled'];
 
     var $tender;
 
@@ -26,6 +28,17 @@ class ClaimsPending extends Controller
     public function listExtendQuery($query)
     {
         $query->where('tender_procurementMethodType', (\Config::get('claims.tender_type')=='!belowThreshold' ? '!=' : '='), 'belowThreshold');
-        $query->whereIn('complaint_status', $this->statuses);
+
+        if(!empty($this->claim_statuses)){
+            $query->whereIn('complaint_status', $this->claim_statuses);
+        }
+
+        if(!empty($this->tender_statuses)){
+            $query->whereIn('tender_status', $this->tender_statuses);
+        }
+
+        if(!empty($this->ignore_tender_statuses)){
+            $query->whereNotIn('tender_status', $this->ignore_tender_statuses);
+        }
     }
 }

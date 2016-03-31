@@ -31,7 +31,7 @@ class Claim extends Model
     /**
      * @var string The database table used by the model.
      */
-    public $table = 'complaints';
+    public $table;
     public $primaryKey = 'complaint_id';
 
     public $hasMany = [
@@ -44,16 +44,21 @@ class Claim extends Model
     public $attachOne = [
         'file' => ['System\Models\File']
     ];
-        
+
+    public function __construct()
+    {
+        $this->table = env('DB_complaints_table', 'complaints');
+    }
+
     public function filterFields($fields, $context = null)
     {
-        if(in_array($this->complaint_status, ['pending', 'accepted']))
+        if(in_array($this->complaint_status, ['pending', 'accepted', 'stopping']))
             $fields->file->hidden=false;
     }
     
     public function beforeSave()
     {
-        if(in_array(Input::get('action'), ['accepted', 'invalid', 'satisfied', 'declined', 'file']))
+        if(in_array(Input::get('action'), ['accepted', 'invalid', 'satisfied', 'declined', 'file', 'stopped']))
         {
             $claim=Claim::where('complaint_id', '=', Input::get('claim_id'))->first();
 
@@ -71,22 +76,33 @@ class Claim extends Model
     
                     $this->complaint_status=Input::get('action');
 
-                    $client->request('PATCH', API::claimUrl($claim->tender_id.'/'.$claim->complaint_path, $claim->complaint_id), [
-                        'auth'=>[
-                            \Config::get('claims.api_key'),
-                            ''
-                        ],
-                        'headers' => [
-                            'Content-Type' => 'application/json',
-                            'X-Client-Request-ID'=>'claims-dev'
-                        ],
-                        'cookies'=>$jar,
-                        'body'=>json_encode([
+                    try{
+                        
+                        $data=[
                             'data'=>[
                                 'status'=>Input::get('action')
                             ]
-                        ])
-                    ]);
+                        ];
+
+                        //if(Input::get('action')=='stopped')
+                        //    $data['data']['decision']="Тендер скасовується замовником";
+
+                        $client->request('PATCH', API::claimUrl($claim->tender_id.'/'.$claim->complaint_path, $claim->complaint_id), [
+                            'auth'=>[
+                                \Config::get('claims.api_key'),
+                                ''
+                            ],
+                            'headers' => [
+                                'Content-Type' => 'application/json',
+                                'X-Client-Request-ID'=>'claims-dev'
+                            ],
+                            'cookies'=>$jar,
+                            'body'=>json_encode($data)
+                        ]);
+                    } catch (GuzzleHttp\Exception\ClientException $e) {            
+                        //dd($e->getResponse());
+                        return Flash::success('Помилка при зміні статусу');
+                    }
 
                     Flash::success('Статус змінено');
                 }
@@ -139,8 +155,7 @@ class Claim extends Model
                             ]);
                         }
                     } catch (GuzzleHttp\Exception\ClientException $e) {            
-                        //$e->getRequest();
-                        //$e->getResponse();
+                        //dd($e->getResponse());
 
                         $file->delete();
                         $this->file=null;
@@ -215,6 +230,24 @@ class Claim extends Model
         });        
     }
     
+    public function getTenderStatusTranslatedAttribute()
+    {
+        $statuses=[
+            'active.enquiries'=>'Період уточнень',
+            'active.tendering'=>'Період прийому пропозицій',
+            'active.pre-qualification'=>'Прекваліфікація',
+            'active.pre-qualification.stand-still'=>'Прекваліфікація (період оскаржень)',
+            'active.auction'=>'Аукціон',
+            'active.qualification'=>'Кваліфікація',
+            'active'=>'Активна',
+            'unsuccessfull'=>'Не успішна',
+            'cancelled'=>'Закупівля скасована',
+            'active.awarded'=>'Контракт'
+        ];
+
+        return !empty($statuses[$this->tender_status]) ? $statuses[$this->tender_status] : $this->tender_status;
+    }
+
     public function getStatusTranslatedAttribute()
     {
         $statuses=[
@@ -224,9 +257,11 @@ class Claim extends Model
             'declined'=>'Не задоволено',
             'satisfied'=>'Задоволено',
             'cancelled'=>'Скасовано',
-            'resolved'=>'Виконано'
+            'resolved'=>'Виконано',
+            'stopping'=>'Відкликано скаржником',
+            'stopped'=>'Розгляд зупинено',
         ];
 
-        return $statuses[$this->complaint_status];
+        return !empty($statuses[$this->complaint_status]) ? $statuses[$this->complaint_status] : $this->complaint_status;
     }
 }

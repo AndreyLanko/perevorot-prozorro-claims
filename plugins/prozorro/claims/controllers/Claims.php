@@ -35,6 +35,7 @@ class Claims extends Controller
         switch($claim->complaint_status)
         {
             case 'accepted':
+            case 'stopping':
                 BackendMenu::setContext('prozorro.Claims', 'claims-main', 'prozorro-accepted');
                 break;
 
@@ -51,6 +52,13 @@ class Claims extends Controller
             break;
         }
 
+        switch($claim->tender_status)
+        {
+            case 'cancelled':
+                BackendMenu::setContext('prozorro.Claims', 'claims-main', 'prozorro-cancelled');
+                break;
+        }
+    
         $this->asExtension('FormController')->update($claimId);
     }
 }

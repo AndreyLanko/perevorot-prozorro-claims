@@ -42,7 +42,7 @@ class API
                 'procurementMethod'=>$json_tender['data']['procurementMethod'],
                 'procurementMethodType'=>$json_tender['data']['procurementMethodType'],
             ],
-            'dateSubmitted'=>!empty($json_claim['dateSubmitted']) ? $json_claim['dateSubmitted'] : $claim->complaint_json['dateSubmitted'],
+            'dateSubmitted'=>!empty($json_claim['dateSubmitted']) ? $json_claim['dateSubmitted'] : (empty($claim->complaint_json['dateSubmitted']) ? : $claim->complaint_json['dateSubmitted']) ,
             'complaintID'=>$claim->complaint_json['complaintID'],
             'date'=>$json_claim['date'],
             'type'=>$json_claim['type'],

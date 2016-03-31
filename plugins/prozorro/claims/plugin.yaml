@@ -30,6 +30,12 @@ navigation:
                 icon: icon-archive
                 permissions:
                     - prozorro.claims
+            prozorro-cancelled:
+                label: Скасовані
+                url: prozorro/claims/claimscancelled
+                icon: icon-inbox
+                permissions:
+                    - prozorro.claims
 permissions:
     prozorro.claims:
         tab: Скарги

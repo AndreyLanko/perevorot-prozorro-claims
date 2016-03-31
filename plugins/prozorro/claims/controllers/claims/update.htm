@@ -7,6 +7,11 @@
 <?php Block::endPut() ?>
 
 <?php if (!$this->fatalError): ?>
+    <style>
+        .warning-action.disabled{
+            background-color: #BBB;
+        }
+    </style>
 
     <?= Form::open(['class' => 'layout']) ?>
         <div class="layout-row">
@@ -23,15 +28,23 @@
                         ['name'=>'Прийняти', 'action'=>'accepted', 'warning'=>'СКАРГА ПРИЙНЯТА ДО РОЗГЛЯДУ'],
                         ['name'=>'Залишити без розгляду', 'action'=>'invalid', 'warning'=>'СКАРГА ЗАЛИШЕНА БЕЗ РОЗГЛЯДУ']
                     ];
-                break;
+                    break;
+                case 'stopping':
+                    $url='claimsaccepted';
+                    $buttons=[
+                        ['name'=>'Задовольнити', 'action'=>'satisfied', 'disabled'=>true, 'warning'=>'СКАРГА ЗАДОВОЛЕНА'],
+                        ['name'=>'Залишити без задоволення', 'action'=>'declined', 'disabled'=>true, 'warning'=>'СКАРГА ВІДХИЛЕНА'],
+                        ['name'=>'Припинити розгляд', 'action'=>'stopped', 'warning'=>'РОЗГЛЯД СКАРГИ ЗУПИНЕНО']
+                    ];  
+                    break;              
                 case 'accepted':
                     $url='claimsaccepted';
                     $buttons=[
                         ['name'=>'Задовольнити', 'action'=>'satisfied', 'warning'=>'СКАРГА ЗАДОВОЛЕНА'],
                         ['name'=>'Залишити без задоволення', 'action'=>'declined', 'warning'=>'СКАРГА ВІДХИЛЕНА'],
-                        ['name'=>'Зупинити розгляд', 'action'=>'', 'warning'=>'РОЗГЛЯД СКАРГИ ЗУПИНЕНО']
+                        ['name'=>'Припинити розгляд', 'action'=>'stopping', 'warning'=>'РОЗГЛЯД СКАРГИ ЗУПИНЕНО']
                     ];
-                break;
+                    break;
                 default:
                     $url='claimsarchive';
             }
@@ -55,7 +68,7 @@
             <div class="form-buttons">
                 <div class="loading-indicator-container">
                     <button type="button"
-                            class="btn btn-success warning-action"
+                            class="btn btn-success warning-action<?=!empty($buttons[0]['disabled'])?' disabled':''?>"
                             data-toggle="modal"
                             data-target="#warning"
                             data-warning-text="<?=$buttons[0]['warning']?>"
@@ -65,7 +78,7 @@
                         <i class="oc-icon oc-icon-thumbs-up"></i> <?=$buttons[0]['name']?>
                     </button> 
                     <button type="button"
-                            class="btn btn-danger warning-action"
+                            class="btn btn-danger warning-action<?=!empty($buttons[1]['disabled'])?' disabled':''?>"
                             data-toggle="modal"
                             data-target="#warning"
                             data-warning-text="<?=$buttons[1]['warning']?>"
@@ -76,12 +89,12 @@
                     </button>
                     <?php if (!empty($buttons[2]['name'])): ?>
                         <button type="button"
-                                class="btn btn-warning warning-action disabled"
+                                class="btn btn-warning warning-action<?=!empty($buttons[2]['disabled'])?' disabled':''?>"
                                 data-toggle="modal"
                                 data-target="#warning"
                                 data-warning-text="<?=$buttons[2]['warning']?>"
-                                data-warning-button="#reject-button"
-                                data-warning-action="danger"
+                                data-warning-button="#stop-button"
+                                data-warning-action="stop"
                                 data-hotkey="ctrl+s, cmd+s">
                             <i class="oc-icon oc-icon-inbox"></i> <?=$buttons[2]['name']?>
                         </button>
@@ -162,6 +175,23 @@
                         </button>
                         <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Повернутись до скарги</button>
                     </div>
+                    <?php if(!empty($buttons[2])): ?>
+                    <div class="modal-footer modal-warning-action" style="text-align:left" id="stop-button">
+                        <button
+                            type="submit"
+                            data-request="onSave"
+                            data-request-data="redirect:1,action:'<?=$buttons[2]['action']?>',claim_id:'<?= $this->vars['formModel']->complaint_id ?>'"
+                            data-hotkey="ctrl+s, cmd+s"
+                            data-load-indicator="Збереження..."
+                            class="btn btn-warning"
+                            data-trigger-action="enable"
+                            data-trigger="#confirmed"
+                            data-trigger-condition="checked">                            
+                            <i class="oc-icon oc-icon-inbox"></i><?=$buttons[2]['name']?>
+                        </button>
+                        <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Повернутись до скарги</button>
+                    </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

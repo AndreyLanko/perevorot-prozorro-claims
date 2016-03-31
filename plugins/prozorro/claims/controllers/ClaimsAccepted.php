@@ -10,7 +10,9 @@ class ClaimsAccepted extends ClaimsPending
     
     public $listConfig = 'config_list.yaml';
     
-    public $statuses=['accepted'];
+    public $claim_statuses=['accepted', 'stopping'];
+    public $tender_statuses;
+    public $ignore_tender_statuses=['cancelled'];
 
     public function __construct()
     {
